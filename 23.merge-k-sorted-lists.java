@@ -1,3 +1,5 @@
+import java.util.List;
+
 /*
  * @lc app=leetcode id=23 lang=java
  *
@@ -42,8 +44,47 @@
  * }
  */
 class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        if (list1 == null) return list2;
+        if (list2 == null) return list1;
+
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+
+        while(list1 != null && list2 != null){
+            if(list1.val < list2.val){
+                curr.next = list1;
+                list1 = list1.next;   
+            }
+            else {
+                curr.next = list2;
+                list2 = list2.next;
+            }
+            curr = curr.next;
+        }
+        if (list2 != null)
+            curr.next = list2;
+        else
+            curr.next = list1;
+        return dummy.next;
+    }
+
+
     public ListNode mergeKLists(ListNode[] lists) {
-        
+
+        if (lists.length == 0) return null;
+        if (lists.length == 1) return lists[0];
+        int len = lists.length;
+        while( len != 1 ){
+            for(int i = 0; i < len/2; i++)
+                lists[i] = mergeTwoLists(lists[2*i], lists[2*i+1]);
+            if (len % 2 == 1)
+                lists[len/2] = lists[len-1];
+            len = (len+1)/2;        // current length
+        }
+
+        return lists[0];
+       
     }
 }
 // @lc code=end
