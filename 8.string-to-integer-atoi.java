@@ -88,31 +88,48 @@
 
 // @lc code=start
 class Solution {
-    public int myAtoi(String str) {
-        str.trim();
-        String[] strings = str.split(" ");
-        boolean flag = true;
-        if (strings[0] == null)
-            return 0;
-        str = strings[0];
-        if (str.charAt(0) != '-' && !(str.charAt(0) >= '0' && str.charAt(0) <= '9'))
-            return 0;
-        if (str.charAt(0) == '-'){
-            flag = false;
-            str = str.substring(1, str.length() - 1);
-        }
-        if (str.length() > 10)
-            return flag ? Integer.MAX_VALUE : Integer.MIN_VALUE;
-        
-        int res = 0;
-        res = Integer.parseInt(str);
-        if (flag && res < 0)
-            return Integer.MAX_VALUE;
-        if (!flag && res > 0)
-            return Integer.MIN_VALUE;
-        
-        return flag ? res : -res;
-    }
+    public static int myAtoi(String str) {
+
+     if (str.isEmpty()) return 0;
+     str = str.trim();
+
+     String[] strings = str.split(" ");
+     boolean flag = true;
+     if (strings[0] == null || strings[0].isEmpty())
+         return 0;
+     str = strings[0];
+     if (str.charAt(0) != '-' && str.charAt(0) != '+' && !(str.charAt(0) >= '0' && str.charAt(0) <= '9'))
+         return 0;
+     if (str.charAt(0) == '-'){
+         flag = false;
+         str = str.substring(1);
+     }
+     else if (str.charAt(0) == '+')
+         str = str.substring(1);
+     if (str.isEmpty())
+         return 0;
+     while(!str.isEmpty() && str.charAt(0) == '0')
+         str = str.substring(1);
+     if (str.isEmpty())
+         return 0;
+       
+     
+     int res = 0;
+     for (int i = 0; i < str.length(); i++) {
+         
+         if (!(str.charAt(i) <= '9' && str.charAt(i)>='0'))
+             break;
+         if(Integer.MAX_VALUE/10 < res || Integer.MAX_VALUE/10 == res && Integer.MAX_VALUE %10 < str.charAt(i)-'0')
+         return flag ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+
+         res *= 10;
+         res += (str.charAt(i) - '0');
+     }
+
+ 
+
+     return flag ? res : -res;
+ }
 } 
 // @lc code=end
 
